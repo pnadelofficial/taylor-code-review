@@ -7,6 +7,7 @@ import io
 def load_data(): 
     qc = pd.read_csv('data/qc_curated_2026-06-10.csv')
     org_data = pd.read_csv('data/org_data_taylor.csv')
+    org_data = org_data[org_data.columns[:20]]  # Keep only the first 20 columns
     codes = pd.read_csv('data/taylor_codes_df.csv')
     return qc, org_data, codes
 
@@ -44,7 +45,7 @@ st.plotly_chart(fig, use_container_width=True)
 merged_with_org = pd.merge(filtered_codes, org_data, left_on='id', right_on='randomid', how='left')
 csv = convert_for_download(merged_with_org)
 st.download_button(
-    label="Download Filtered Data",
+    label="Download Filtered Data (first 20 columns of the original data)",
     data=convert_for_download(merged_with_org),
     file_name="merged_filtered_data.xlsx",
     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
